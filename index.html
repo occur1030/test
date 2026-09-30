@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김동훈 - 종합 포트폴리오</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f3f8;
+            color: #2c3e50;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+
+        /* 전체 레이아웃: 2단 구성 (좌측 고정 네비게이션 및 프로필 / 우측 스크롤 본문) */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 남색 상단/좌측 소개 영역 */
+        .sidebar {
+            background: linear-gradient(135deg, #1a2530 0%, #0f171e 100%);
+            color: white;
+            width: 350px;
+            position: fixed;
+            height: 100vh;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.15);
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .profile-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            background: #2c3e50;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 4px solid #34495e;
+        }
+
+        .sidebar h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .sidebar .badge {
+            background-color: #2980b9;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(41, 128, 185, 0.4);
+        }
+
+        .sidebar-divider {
+            width: 100%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+            margin: 15px 0;
+        }
+
+        .sidebar-intro {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            word-break: keep-all;
+            margin-bottom: 25px;
+        }
+
+        /* 페이지 이동 목차 네비게이션 */
+        .nav-links {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: #2980b9;
+            color: white;
+            border-color: #2980b9;
+            transform: translateX(5px);
+        }
+
+        /* 밝은 본문 영역 (3페이지 분량의 스크롤 컨테이너) */
+        .main-content {
+            margin-left: 350px;
+            flex: 1;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 각 페이지(섹션) 분할 스타일 (최소 뷰포트 높이 확보로 풍성한 분량 구성) */
+        .page-section {
+            min-height: 100vh;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-section:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            color: #1a2530;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        /* 카드 그리드 스타일 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .sub-list {
+            margin-top: 12px;
+            padding-left: 18px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .sub-list li {
+            margin-bottom: 4px;
+        }
+
+        /* 목표 박스 스타일 */
+        .goal-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .goal-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 6px solid #0284c7;
+            padding: 30px;
+            border-radius: 0 14px 14px 0;
+            font-size: 20px;
+            color: #0369a1;
+            font-weight: 700;
+            line-height: 1.6;
+            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.08);
+            text-align: center;
+        }
+
+        .action-plans {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .plan-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .plan-card h4 {
+            color: #1e293b;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .plan-card p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* 스마트폰 화면 대응 (반응형) */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 40px 20px;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .page-section {
+                padding: 50px 25px;
+                min-height: auto;
+            }
+            .action-plans {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 좌측 고정 프로필 및 네비게이션 영역 -->
+        <div class="sidebar">
+            <div class="profile-icon">🛡️</div>
+            <h1>김동훈</h1>
+            <div class="badge">군사학과 3학년</div>
+            <div class="sidebar-divider"></div>
+            <p class="sidebar-intro">
+                지적 통찰력과 강인한 체력을 겸비하여 미래 전장을 주도할 정예 장교로 도약하는 중입니다.
+            </p>
+            
+            <div class="nav-links">
+                <a href="#page1">📄 PAGE 1. 관심 분야 탐구</a>
+                <a href="#page2">🔥 PAGE 2. 좋아하는 취미 및 역량</a>
+                <a href="#page3">✨ PAGE 3. 비전 및 실천 목표</a>
+            </div>
+        </div>
+
+        <!-- 우측 3페이지 분량의 스크롤 본문 영역 -->
+        <div class="main-content">
+            
+            <!-- PAGE 1: 관심 분야 -->
+            <section id="page1" class="page-section">
+                <div class="section-header">
+                    <h2>🎯 PAGE 1. 관심 분야</h2>
+                    <p>군사 전문가로서 깊이 있게 파고드는 핵심 연구 분야입니다.</p>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-title">🎖️ 군사학 (용병술)</div>
+                        <div class="card-desc">
+                            군사력을 효과적으로 운용하고 승리를 쟁취하기 위한 고도의 지적 능력과 전략적 사고를 탐구합니다.
+                        </div>
+                        <ul class="sub-list">
+                            <li>전략 및 전술 원리 분석</li>
+                            <li>역사적 전투 교훈 고찰</li>
+                            <li>현대 전장 환경 적용 방안</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🚀 무기체계</div>
+                        <div class="card-desc">
+                            현대 전장의 판도를 바꾸는 첨단 무기체계의 작동 원리와 전술적 가치를 연구합니다.
+                        </div>
+                        <ul class="sub-list">
+                            <li>차세대 전차 및 기동 장비</li>
+                            <li>무인 체계 및 대드론 방어 시스템</li>
+                            <li>정보화·자동화 무기 운용 개념</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 2: 좋아하는 것 -->
+            <section id="page2" class="page-section">
+                <div class="section-header">
+                    <h2>❤️ PAGE 2. 좋아하는 것</h2>
+                    <p>일상 속에서 몰입하며 전술적 감각과 체력을 기르는 활동들입니다.</p>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-title">🎯 발로란트 & 에이펙스 (전술 슈팅 & FPS)</div>
+                        <div class="card-desc">
+                            정밀한 에이미와 빠른 상황 판단력, 팀원과의 유기적인 브리핑으로 전술적 승리를 만들어가는 과정에 깊이 몰입합니다.
+                        </div>
+                        <ul class="sub-list">
+                            <li>순발력 있는 에임 트레이닝 및 플릭·트래킹 감각 연마</li>
+                            <li>맵 구조 분석 및 동선 최적화를 통한 우위 선점</li>
+                            <li>급박한 전장 상황 속 신속한 의사결정 및 협동 플레이</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🏃 달리기 (Running & Endurance)</div>
+                        <div class="card-desc">
+                            한계를 극복하고 강인한 체력과 정신력을 다지는 핵심 루틴입니다.
+                        </div>
+                        <ul class="sub-list">
+                            <li>규칙적인 페이스 조절 및 심폐 단련</li>
+                            <li>체력 유지 및 스트레스 해소</li>
+                            <li>목표 거리/페이스 달성 성취감</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 3: 목표 -->
+            <section id="page3" class="page-section">
+                <div class="section-header">
+                    <h2>✨ PAGE 3. 비전 및 실천 목표</h2>
+                    <p>앞으로 나아갈 방향과 이를 달성하기 위한 구체적인 실천 계획입니다.</p>
+                </div>
+
+                <div class="goal-container">
+                    <div class="goal-box">
+                        "지적 통찰력과 체력을 겸비하여, 전장에서 신뢰받는 최고의 군사 전문가로 거듭나기"
+                    </div>
+
+                    <div class="action-plans">
+                        <div class="plan-card">
+                            <h4>📚 지적 역량 심화</h4>
+                            <p>군사학 서적 및 전술 교리 상시 학습, 비판적 사고력 배양</p>
+                        </div>
+                        <div class="plan-card">
+                            <h4>💪 강인한 체력 유지</h4>
+                            <p>주기적인 러닝 및 근력 운동을 통한 완벽한 체력 관리</p>
+                        </div>
+                        <div class="plan-card">
+                            <h4>🧭 리더십 함양</h4>
+                            <p>책임감 있는 태도로 동기들과 협력하며 장교 소양 체득</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</body>
+</html>
